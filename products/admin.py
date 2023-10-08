@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductPhoto, Comment
+from .models import Product, ProductPhoto, Comment, Categories
 
 
 @admin.register(Product)
@@ -9,6 +9,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductPhoto)
 class ProductPhotoAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Categories)
+class CategoriesAdmin(admin.ModelAdmin):
     pass
 
 

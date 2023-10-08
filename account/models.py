@@ -44,6 +44,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    class Meta:
+        verbose_name = 'Пользователи'
+        verbose_name_plural = 'Пользователи'
+
 
 class Profile(models.Model):
     user_name = models.CharField(max_length=16)
@@ -51,5 +55,10 @@ class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.user.name}\'s profile'
+        return f'{self.user.email}\'s profile'
+
+    class Meta:
+        verbose_name = 'Профили пользователей'
+        verbose_name_plural = 'Профили пользователей'
+
 

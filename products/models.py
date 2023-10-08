@@ -3,27 +3,66 @@ from django.db import models
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=32)
-    description = models.TextField(blank=True, null=True)
-    price = models.PositiveIntegerField()
+    GENDER_CHOICE = [
+        ('man', 'man'),
+        ('woman', 'woman'),
+        ('boy', 'boy'),
+        ('girl', 'girl')
+    ]
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    title = models.CharField(max_length=255, verbose_name='Название')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')
+    category = models.ForeignKey('Categories', related_name='products', on_delete=models.CASCADE,
+                                 verbose_name='Категория')
+    gender = models.CharField(max_length=5, choices=GENDER_CHOICE, verbose_name='Для кого')
+    available = models.BooleanField(default=True, verbose_name='Наличие')
+    price = models.PositiveIntegerField(verbose_name='Цена')
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'Товары'
+        verbose_name_plural = 'Товары'
+
 
 class ProductPhoto(models.Model):
-    photo = models.ImageField(upload_to='image')
-    product = models.ForeignKey('Product', related_name='photos', on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='image', verbose_name='Фотография')
+    product = models.ForeignKey('Product', related_name='photos', on_delete=models.CASCADE,
+                                verbose_name='Товар')
 
     def __str__(self):
         return f'photo to "{self.product.title}"'
 
+    class Meta:
+        verbose_name = 'Фотографии товаров'
+        verbose_name_plural = 'Фотографии товаров'
+
+
+class Categories(models.Model):
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    title = models.CharField(max_length=255, verbose_name='Название')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Категории'
+        verbose_name_plural = 'Категории'
+
 
 class Comment(models.Model):
-    stars = models.PositiveIntegerField()
-    content = models.TextField()
-    product = models.ForeignKey('Product', related_name='comments', on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='comments', on_delete=models.CASCADE)
+    stars = models.PositiveIntegerField(verbose_name='Звёзды')
+    content = models.TextField(verbose_name='Текст')
+    product = models.ForeignKey('Product', related_name='comments', on_delete=models.CASCADE,
+                                verbose_name='Товар')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='comments', on_delete=models.CASCADE,
+                             verbose_name='Пользователь')
 
     def __str__(self):
         return f'comment from {self.user.email}to "{self.product.title}"'
+
+    class Meta:
+        verbose_name = 'Отзывы'
+        verbose_name_plural = 'Отзывы'
+
