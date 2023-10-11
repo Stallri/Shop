@@ -34,7 +34,7 @@ class CustomAccountManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     objects = CustomAccountManager()
 
@@ -45,7 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     class Meta:
-        verbose_name = 'Пользователи'
+        verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
 
@@ -58,7 +58,7 @@ class Profile(models.Model):
         return f'{self.user.email}\'s profile'
 
     class Meta:
-        verbose_name = 'Профили пользователей'
+        verbose_name = 'Профиль пользователя'
         verbose_name_plural = 'Профили пользователей'
 
 

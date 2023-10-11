@@ -20,8 +20,9 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from account.views import UserAPIView, ProfileAPIView
+from account.views import RegistrationAPIView, ProfileAPIView
 from products.views import ProductAPIList, ProductAPI
+from cart.views import CartAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,8 +30,10 @@ urlpatterns = [
     path('api/<str:gender>/<str:category>/', ProductAPIList.as_view()),
     path('api/<str:gender>/<str:category>/<slug:slug>', ProductAPI.as_view()),
 
+    path('api/cart/', CartAPIView.as_view()),
+
     path('api/profile/', ProfileAPIView.as_view()),
-    path('api/user/', UserAPIView.as_view()),
+    path('api/registration/', RegistrationAPIView.as_view()),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
