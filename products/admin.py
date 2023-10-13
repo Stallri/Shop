@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductPhoto, Comment, Categories
+from .models import Product, ProductPhoto, Comment, Category
 
 
 @admin.register(Product)
@@ -12,7 +12,7 @@ class ProductPhotoAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Categories)
+@admin.register(Category)
 class CategoriesAdmin(admin.ModelAdmin):
     pass
 

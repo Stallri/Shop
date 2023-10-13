@@ -7,12 +7,12 @@ class Product(models.Model):
         ('man', 'man'),
         ('woman', 'woman'),
         ('boy', 'boy'),
-        ('girl', 'girl')
+        ('girl', 'girl'),
     ]
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     title = models.CharField(max_length=255, verbose_name='Название')
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
-    category = models.ForeignKey('Categories', related_name='products', on_delete=models.CASCADE,
+    category = models.ForeignKey('Category', related_name='products', on_delete=models.CASCADE,
                                  verbose_name='Категория')
     gender = models.CharField(max_length=5, choices=GENDER_CHOICE, verbose_name='Для кого')
     available = models.BooleanField(default=True, verbose_name='Наличие')
@@ -39,9 +39,16 @@ class ProductPhoto(models.Model):
         verbose_name_plural = 'Фотографии товаров'
 
 
-class Categories(models.Model):
+class Category(models.Model):
+    GENDER_CHOICE = [
+        ('man', 'man'),
+        ('woman', 'woman'),
+        ('boy', 'boy'),
+        ('girl', 'girl'),
+    ]
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     title = models.CharField(max_length=255, verbose_name='Название')
+    gender = models.CharField(max_length=5, choices=GENDER_CHOICE, verbose_name='Для кого')
 
     def __str__(self):
         return self.title

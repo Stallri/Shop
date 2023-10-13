@@ -8,9 +8,6 @@ from .serializer import RegistrationSerializer, ProfileSerializer
 from .models import User, Profile
 
 
-# class UserAPIView(CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = RegistrationSerializer
 class RegistrationAPIView(APIView):
     def post(self, request):
         serializer = RegistrationSerializer(data=request.data)

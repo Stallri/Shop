@@ -17,19 +17,21 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from account.views import RegistrationAPIView, ProfileAPIView
-from products.views import ProductAPIList, ProductAPI
-from cart.views import CartAPIView
+from products.views import ProductAPIList, ProductAPI, CategoryAPIList
+from cart.views import CartAPIView, CartAddAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/<str:gender>/<str:category>/', ProductAPIList.as_view()),
-    path('api/<str:gender>/<str:category>/<slug:slug>', ProductAPI.as_view()),
+    path('api/gender/<str:gender>/', CategoryAPIList.as_view()),
+    path('api/gender/<str:gender>/category/<str:category/', ProductAPIList.as_view()),
+    path('api/product/<slug:slug>', ProductAPI.as_view()),
 
+    path('api/cart-add/<slug:slug>/', CartAddAPIView.as_view()),
     path('api/cart/', CartAPIView.as_view()),
 
     path('api/profile/', ProfileAPIView.as_view()),
