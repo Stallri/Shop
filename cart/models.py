@@ -9,7 +9,7 @@ class CartProduct(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Покупатель - {self.buyer} | Товар - {self.product}'
+        return self.product
 
     class Meta:
         verbose_name = 'Товар корзины'

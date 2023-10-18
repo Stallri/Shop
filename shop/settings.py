@@ -33,8 +33,6 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'account.User'
 
-CART_SESSION_ID = 'cart'
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,7 +45,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
-    "phonenumber_field",
+    'phonenumber_field',
+    'debug_toolbar',
 
     'account.apps.AccountConfig',
     'products.apps.ProductsConfig',
@@ -62,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -144,3 +144,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'image')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

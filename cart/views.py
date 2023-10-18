@@ -11,9 +11,11 @@ from products.models import Product
 @permission_classes([IsAuthenticated])
 class CartAPIView(APIView):
     def get(self, request):
-        queryset = CartProduct.objects.filter(buyer=request.user.id)
+        queryset = CartProduct.objects.all().select_related('product')
         serializer = CartProductSerializer(instance=queryset, many=True)
-        return Response(serializer.data)
+        total_price = (sum(item.product.price for item in queryset))
+        data = serializer.data + [{'total_price': total_price}]
+        return Response(data)
 
 
 @permission_classes([IsAuthenticated])

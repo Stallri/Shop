@@ -4,7 +4,8 @@ from .models import Product, ProductPhoto, Comment, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'category', 'available', 'price')
+    ordering = ('category', )
 
 
 @admin.register(ProductPhoto)
@@ -14,7 +15,8 @@ class ProductPhotoAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoriesAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'gender')
+    ordering = ('gender',)
 
 
 @admin.register(Comment)

@@ -5,4 +5,4 @@ from .models import CartProduct
 
 @admin.register(CartProduct)
 class CartProductAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['product', 'buyer']
