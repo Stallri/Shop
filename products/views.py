@@ -23,6 +23,15 @@ class ProductListAPI(ListAPIView):
         return Product.objects.filter(category__slug=category)
 
 
+class PopularProductsAPI(ListAPIView):
+    # Вывод списка наиболее часто покупаемых товаров
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        queryset = Product.objects.order_by('-number_of_sold')[:3]
+        return queryset
+
+
 class ProductAPI(RetrieveAPIView):
     # Вывод одного товара
     serializer_class = ProductSerializer

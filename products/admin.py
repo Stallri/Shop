@@ -4,8 +4,8 @@ from .models import Product, ProductPhoto, Comment, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'available', 'price')
-    ordering = ('category', )
+    list_display = ('title', 'category', 'available', 'number_of_sold', 'price')
+    ordering = ('category', 'number_of_sold')
 
 
 @admin.register(ProductPhoto)

@@ -8,6 +8,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
     category = models.ForeignKey('Category', related_name='products', on_delete=models.CASCADE,
                                  verbose_name='Категория')
+    number_of_sold = models.PositiveIntegerField(verbose_name='Количество проданных товаров', default=0)
     available = models.BooleanField(default=True, verbose_name='Наличие')
     price = models.PositiveIntegerField(verbose_name='Цена')
 

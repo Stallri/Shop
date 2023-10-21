@@ -18,13 +18,14 @@ class ProductSerializerTestCase(TestCase):
     def test_serializer(self):
         category = Category.objects.create(slug='accessories', title='Аксессуары', gender='woman')
         product = Product.objects.create(slug='wristwatch', title='Наручные часы', description='', category=category,
-                                         available=True, price=14000)
+                                         available=True, number_of_sold=1, price=14000)
         data = ProductSerializer([product], many=True).data
         expected_data = [
             {'title': 'Наручные часы',
              'description': '',
              'category': 'Аксессуары',
              'available': True,
+             'number_of_sold': 1,
              'price': 14000,
              'photos': []}
         ]
