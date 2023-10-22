@@ -2,15 +2,20 @@ from django.contrib import admin
 from .models import Product, ProductPhoto, Comment, Category
 
 
+class ProductPhotoTabularInline(admin.TabularInline):
+    model = ProductPhoto
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'available', 'number_of_sold', 'price')
     ordering = ('category', 'number_of_sold')
+    inlines = [ProductPhotoTabularInline]
 
 
-@admin.register(ProductPhoto)
-class ProductPhotoAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(ProductPhoto)
+# class ProductPhotoAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(Category)

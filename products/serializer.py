@@ -9,6 +9,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('title', 'description', 'category', 'available', 'number_of_sold', 'price', 'photos')
         extra_kwargs = {'number_of_sold': {'read_only': True}}
+        depth = 1
 
 
 class CategorySerializer(serializers.ModelSerializer):
