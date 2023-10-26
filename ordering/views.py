@@ -17,12 +17,14 @@ class OrderAPI(APIView):
 
     def post(self, request):
         if (request.user.orders.first()) and (not request.user.orders.first().paid):
-            return Response({'message': 'Order not paid'})
+            return Response({'error': 'Order not paid'})
         serializer = OrderSerializer(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request):
-        Order.objects.filter(user=request.user).first().delete()
-        return Response({'message': 'Order was delete'})
+        if (request.user.orders.first()) and (not request.user.orders.first().paid):
+            Order.objects.filter(user=request.user).first().delete()
+            return Response({'message': 'Order was delete'})
+        return Response({'error': 'No unpaid order'})
