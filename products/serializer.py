@@ -1,15 +1,16 @@
 from rest_framework import serializers
+
 from .models import Product, Category
+from discounts.serializer import DiscountSerializer
 
 
 class ProductSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
+    discount = DiscountSerializer()
 
     class Meta:
         model = Product
-        fields = ('title', 'description', 'category', 'available', 'number_of_sold', 'price', 'photos')
-        extra_kwargs = {'number_of_sold': {'read_only': True}}
-        depth = 1
+        fields = ('title', 'description', 'category', 'available', 'price', 'discount', 'photos')
 
 
 class CategorySerializer(serializers.ModelSerializer):

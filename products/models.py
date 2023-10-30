@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from discounts.models import Discount
+
 
 class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
@@ -10,6 +12,8 @@ class Product(models.Model):
                                  verbose_name='Категория')
     number_of_sold = models.PositiveIntegerField(verbose_name='Количество проданных товаров', default=0)
     available = models.BooleanField(default=True, verbose_name='Наличие')
+    discount = models.ForeignKey(Discount, related_name='products', blank=True, null=True, on_delete=models.SET_NULL,
+                                 verbose_name='Скидка')
     price = models.PositiveIntegerField(verbose_name='Цена')
 
     def __str__(self):

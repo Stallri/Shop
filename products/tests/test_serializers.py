@@ -25,8 +25,8 @@ class ProductSerializerTestCase(TestCase):
              'description': '',
              'category': 'Аксессуары',
              'available': True,
-             'number_of_sold': 1,
              'price': 14000,
+             'discount': None,
              'photos': []}
         ]
         self.assertEqual(expected_data, data)

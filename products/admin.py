@@ -8,14 +8,9 @@ class ProductPhotoTabularInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'available', 'number_of_sold', 'price')
+    list_display = ('title', 'category', 'available', 'number_of_sold', 'discount', 'price')
     ordering = ('category', 'number_of_sold')
     inlines = [ProductPhotoTabularInline]
-
-
-# @admin.register(ProductPhoto)
-# class ProductPhotoAdmin(admin.ModelAdmin):
-#     pass
 
 
 @admin.register(Category)

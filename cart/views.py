@@ -14,9 +14,7 @@ class CartAPIView(APIView):
     def get(self, request):
         queryset = CartProduct.objects.all().select_related('product')
         serializer = CartProductSerializer(instance=queryset, many=True)
-        total_price = (sum(item.product.price for item in queryset))
-        data = serializer.data + [{'total_price': total_price}]
-        return Response(data)
+        return Response(serializer.data)
 
 
 @permission_classes([IsAuthenticated])
@@ -27,5 +25,4 @@ class CartAddAPIView(APIView):
         cart_product = CartProduct.objects.create(buyer=user, product=product)
         product.number_of_sold += 1
         product.save()
-        data = {'user': cart_product.buyer.email, 'product': cart_product.product.title}
-        return Response(data=data)
+        return Response(CartProductSerializer(instance=CartProduct.objects.all(), many=True).data)
