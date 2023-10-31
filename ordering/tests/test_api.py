@@ -9,7 +9,6 @@ from ordering.serializer import OrderSerializer
 
 class OrderingAPICase(APITestCase):
 
-
     def setUp(self):
         self.url_register = reverse('registration')
         self.data_register = {
@@ -37,7 +36,6 @@ class OrderingAPICase(APITestCase):
 
     def test_post(self):
         order_data = {
-            'user': self.user.email,
             'city': 'city',
             'address': 'address'
         }

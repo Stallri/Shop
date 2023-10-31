@@ -7,7 +7,6 @@ class Order(models.Model):
     city = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
     total_price = models.PositiveIntegerField(default=0)
     paid = models.BooleanField(default=False)
 
