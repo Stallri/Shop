@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
@@ -32,7 +34,7 @@ class CartAPITestCase(APITestCase):
         response_cart = self.client.get(url_cart)
         serializer = CartProductSerializer([cart_product], many=True)
         self.assertEqual(status.HTTP_200_OK, response_cart.status_code)
-        self.assertEqual(serializer.data + [{'total_price': 20000}], response_cart.data)
+        self.assertEqual(serializer.data, response_cart.data)
 
 
 class CartAddAPITestCase(APITestCase):
@@ -55,9 +57,9 @@ class CartAddAPITestCase(APITestCase):
         response_token = self.client.post(url_token, data_token, format='json')
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + response_token.data['access'])
         url = reverse('cart_add', kwargs={'slug': 'sneakers'})
-        expected_data = {
-            'user': 'test2@gmail.com',
-            'product': 'Кроссовки'
-        }
+        expected_data = [OrderedDict([('product', OrderedDict(
+            [('title', 'Кроссовки'), ('description', 'description'), ('category', 'Обувь'), ('available', True),
+             ('price', 12000), ('discount', None), ('photos', [])]))])]
+
         response_cart = self.client.post(url)
         self.assertEqual(expected_data, response_cart.data)
