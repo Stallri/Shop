@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    env_file:
+      - .env.docker
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./shop
+    container_name: backend
+    env_file:
+      - ./shop/.env.backend
+    volumes:
+      - ./shop:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  celery:
+    build:
+      context: ./shop
+    container_name: celery
+    command: celery -A shop worker -l info
+    env_file:
+      - ./shop/.env.backend
+    volumes:
+      - ./shop:/app
+    depends_on:
+      - db
+      - redis
+
+  celery-beat:
+    build:
+      context: ./shop
+    container_name: celery-beat
+    command: celery -A shop beat -l info
+    env_file:
+      - ./shop/.env.backend
+    volumes:
+      - ./shop:/app
+    depends_on:
+      - db
+      - redis
+      - celery
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

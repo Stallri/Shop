@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 import environ
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,6 +23,8 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
+TIME_ZONE = 'Europe/Moscow'
+
 AUTH_USER_MODEL = 'account.User'
 
 # Application definition
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'phonenumber_field',
     'debug_toolbar',
+    'django_celery_beat',
 
     'account.apps.AccountConfig',
     'products.apps.ProductsConfig',
@@ -178,7 +182,6 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -187,3 +190,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_BEAT_SCHEDULE = {
+    'remove_inactive_discounts': {
+        'task': 'discounts.tasks.remove_discounts',
+        'schedule': crontab(minute=0, hour=0)
+    }
+}
