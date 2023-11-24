@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import User, Profile
+from .tasks import registration_mail
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -24,6 +25,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         Profile.objects.create(user=user)
+        registration_mail.delay(user.email)
         return user
 
 
