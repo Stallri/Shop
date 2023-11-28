@@ -8,7 +8,7 @@ class ProductPhotoTabularInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'available', 'number_of_sold', 'discount', 'price')
+    list_display = ('title', 'category', 'available', 'discount', 'price')
     ordering = ('category', 'number_of_sold')
     inlines = [ProductPhotoTabularInline]
 

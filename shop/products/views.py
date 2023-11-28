@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,8 +7,9 @@ from .serializer import ProductSerializer, CategorySerializer
 from .models import Product, Category
 
 
+@extend_schema(tags=["Shop"])
+@extend_schema(summary="Получить список категорий")
 class CategoryListAPI(ListAPIView):
-    # Вывод списка категорий
     serializer_class = CategorySerializer
 
     def get_queryset(self):
@@ -15,8 +17,9 @@ class CategoryListAPI(ListAPIView):
         return Category.objects.filter(gender=gender)
 
 
+@extend_schema(tags=["Shop"])
+@extend_schema(summary="Получить список товаров")
 class ProductListAPI(ListAPIView):
-    # Вывод списка товаров категории
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -24,8 +27,9 @@ class ProductListAPI(ListAPIView):
         return Product.objects.filter(category__slug=category)
 
 
+@extend_schema(tags=["Shop"])
+@extend_schema(summary="Получить список наиболее часто покупаемых товаров")
 class PopularProductsAPI(ListAPIView):
-    # Вывод списка наиболее часто покупаемых товаров
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -33,8 +37,9 @@ class PopularProductsAPI(ListAPIView):
         return queryset
 
 
+@extend_schema(tags=["Shop"])
+@extend_schema(summary="Получить конкретный товар")
 class ProductAPI(RetrieveAPIView):
-    # Вывод одного товара
     serializer_class = ProductSerializer
 
     def get_object(self):
