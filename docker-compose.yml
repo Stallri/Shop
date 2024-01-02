@@ -2,8 +2,10 @@ services:
   db:
     image: postgres
     container_name: postgres
-    env_file:
-      - .env.docker
+    environment:
+      POSTGRES_DB: shop_db
+      POSTGRES_USER: shop_user
+      POSTGRES_PASSWORD: 12345
     volumes:
       - pgdata:/var/lib/postgresql/data/
     ports:
@@ -14,7 +16,7 @@ services:
       context: ./shop
     container_name: backend
     env_file:
-      - ./shop/.env.backend
+      - ./shop/.env
     volumes:
       - static_volume:/app/static
     expose:
@@ -28,7 +30,7 @@ services:
     container_name: celery
     command: celery -A shop worker -l info
     env_file:
-      - ./shop/.env.backend
+      - ./shop/.env
     volumes:
       - ./shop:/app
     depends_on:
@@ -41,7 +43,7 @@ services:
     container_name: celery-beat
     command: celery -A shop beat -l info
     env_file:
-      - ./shop/.env.backend
+      - ./shop/.env
     volumes:
       - ./shop:/app
     depends_on:
