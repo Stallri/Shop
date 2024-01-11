@@ -9,17 +9,13 @@ RUN pip install --upgrade pip
 
 WORKDIR /app
 
-RUN adduser -D app
 RUN mkdir /app/static
 RUN mkdir /app/media
-RUN chown -R app:app /app
-RUN chmod 755 /app
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
 
-USER app
 
 CMD python manage.py makemigrations \
     && python manage.py migrate \
