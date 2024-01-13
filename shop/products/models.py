@@ -46,7 +46,7 @@ class Category(models.Model):
     ]
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     title = models.CharField(max_length=255, verbose_name='Название')
-    gender = models.CharField(max_length=5, choices=GENDER_CHOICE)
+    gender = models.CharField(max_length=5, choices=GENDER_CHOICE, verbose_name='Пол')
 
     def __str__(self):
         return f'{self.title} ({self.get_gender_display()})'

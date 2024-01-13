@@ -1,12 +1,19 @@
 from rest_framework import serializers
 
-from .models import Product, Category
+from .models import Product, Category, ProductPhoto
 from discounts.serializer import DiscountSerializer
+
+
+class ProductPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductPhoto
+        fields = '__all__'
 
 
 class ProductSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     discount = DiscountSerializer()
+    photos = ProductPhotoSerializer(many=True)
 
     class Meta:
         model = Product

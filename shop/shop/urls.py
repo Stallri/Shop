@@ -21,7 +21,7 @@ urlpatterns = [
     path('api/shop/popular-products/', PopularProductsAPI.as_view(), name='popular_products'),
 
     path('api/cart/', CartAPIView.as_view(), name='cart_list'),
-    path('api/cart/add/<slug:slug>/', CartAddAPIView.as_view(), name='cart_add'),
+    path('api/cart/<slug:slug>/', CartAddAPIView.as_view(), name='cart_add'),
 
     path('api/order/', OrderAPI.as_view(), name='ordering'),
 
