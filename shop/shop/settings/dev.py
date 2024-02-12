@@ -14,7 +14,7 @@ MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_db',
+        'NAME': 'shop_db',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
