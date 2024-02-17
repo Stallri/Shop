@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'drf_spectacular',
     'drf_spectacular_sidecar',
+    'debug_toolbar',
 
     'account.apps.AccountConfig',
     'products.apps.ProductsConfig',
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -118,14 +120,24 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
 ]
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('DB_NAME'),
+#         'USER': env('DB_USER'),
+#         'PASSWORD': env('DB_PASSWORD'),
+#         'HOST': env('DB_HOST'),
+#         'PORT': env('DB_PORT')
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT')
+        'NAME': 'shop_db',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': 5432
     }
 }
 SIMPLE_JWT = {
@@ -168,7 +180,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -198,13 +209,13 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_BEAT_SCHEDULE = {
-    'remove_inactive_discounts': {
-        'task': 'discounts.tasks.remove_discounts',
-        'schedule': crontab(minute=0, hour=0)
-    }
-}
+# CELERY_BROKER_URL = 'redis://redis:6379/0'
+# CELERY_BEAT_SCHEDULE = {
+#     'remove_inactive_discounts': {
+#         'task': 'discounts.tasks.remove_discounts',
+#         'schedule': crontab(minute=0, hour=0)
+#     }
+# }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
@@ -217,3 +228,19 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": 'DEBUG',
+        },
+    },
+}

@@ -7,7 +7,7 @@ from discounts.serializer import DiscountSerializer
 class ProductPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductPhoto
-        fields = '__all__'
+        fields = ('photo', )
 
 
 class ProductSerializer(serializers.ModelSerializer):

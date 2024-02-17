@@ -6,7 +6,6 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from account.views import RegistrationAPIView, ProfileAPIView
-from products.views import ProductListAPI, ProductAPI, CategoryListAPI, PopularProductsAPI
 from cart.views import CartAPIView, CartAddAPIView
 from ordering.views import OrderAPI
 
@@ -15,10 +14,7 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
 
-    path('api/shop/categories/<str:gender>/', CategoryListAPI.as_view(), name='category_list'),
-    path('api/shop/products/<str:category>/', ProductListAPI.as_view(), name='product_list'),
-    path('api/shop/product/<slug:slug>/', ProductAPI.as_view(), name='product_detail'),
-    path('api/shop/popular-products/', PopularProductsAPI.as_view(), name='popular_products'),
+    path('api/shop/', include('products.urls')),
 
     path('api/cart/', CartAPIView.as_view(), name='cart_list'),
     path('api/cart/<slug:slug>/', CartAddAPIView.as_view(), name='cart_add'),

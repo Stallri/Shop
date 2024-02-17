@@ -1,10 +1,11 @@
+from django.db.models import Prefetch
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializer import ProductSerializer, CategorySerializer
-from .models import Product, Category
+from .models import Product, Category, ProductPhoto
 
 
 @extend_schema(tags=["Shop"])
@@ -24,7 +25,8 @@ class ProductListAPI(ListAPIView):
 
     def get_queryset(self):
         category = self.kwargs.get('category')
-        return Product.objects.filter(category__slug=category)
+        return (Product.objects.filter(
+            category__slug=category)).prefetch_related('photos').select_related('category', 'discount')
 
 
 @extend_schema(tags=["Shop"])
@@ -33,7 +35,8 @@ class PopularProductsAPI(ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        queryset = Product.objects.order_by('-number_of_sold')[:3]
+        queryset = Product.objects.prefetch_related('photos').select_related(
+            'category', 'discount').order_by('-number_of_sold')[:3]
         return queryset
 
 
@@ -45,3 +48,4 @@ class ProductAPI(RetrieveAPIView):
     def get_object(self):
         slug = self.kwargs.get('slug')
         return Product.objects.get(slug=slug)
+
