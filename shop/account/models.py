@@ -54,7 +54,7 @@ class Profile(models.Model):
     phoneNumberRegex = RegexValidator(regex=r'^\+?1?\d{8,15}$')
 
     user_name = models.CharField(max_length=32)
-    phone_number = models.CharField(validators=[phoneNumberRegex], max_length=16, unique=True)
+    phone_number = models.CharField(validators=[phoneNumberRegex], max_length=16)
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
 
     def __str__(self):

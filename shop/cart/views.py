@@ -15,7 +15,8 @@ from products.models import Product
 class CartAPIView(APIView):
     @extend_schema(summary="Получение товаров корзины")
     def get(self, request):
-        queryset = CartProduct.objects.all().select_related('product')
+        queryset = CartProduct.objects.filter(buyer=request.user).select_related('product').prefetch_related(
+            'product__category', 'product__photos', 'product__discount')
         serializer = CartProductSerializer(instance=queryset, many=True)
         return Response(serializer.data)
 
@@ -30,4 +31,6 @@ class CartAddAPIView(APIView):
         cart_product = CartProduct.objects.create(buyer=user, product=product)
         product.number_of_sold += 1
         product.save()
-        return Response(CartProductSerializer(instance=CartProduct.objects.all(), many=True).data)
+        queryset = CartProduct.objects.filter(buyer=request.user).select_related('product').prefetch_related(
+            'product__category', 'product__photos', 'product__discount')
+        return Response(CartProductSerializer(instance=queryset, many=True).data)

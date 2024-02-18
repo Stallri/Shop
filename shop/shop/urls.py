@@ -6,7 +6,6 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from account.views import RegistrationAPIView, ProfileAPIView
-from cart.views import CartAPIView, CartAddAPIView
 from ordering.views import OrderAPI
 
 urlpatterns = [
@@ -16,8 +15,7 @@ urlpatterns = [
 
     path('api/shop/', include('products.urls')),
 
-    path('api/cart/', CartAPIView.as_view(), name='cart_list'),
-    path('api/cart/<slug:slug>/', CartAddAPIView.as_view(), name='cart_add'),
+    path('api/cart/', include('cart.urls')),
 
     path('api/order/', OrderAPI.as_view(), name='ordering'),
 
