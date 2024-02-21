@@ -28,9 +28,11 @@ class CartAddAPIView(APIView):
     def post(self, request, slug):
         product = get_object_or_404(Product, slug=slug)
         user = request.user
-        cart_product = CartProduct.objects.create(buyer=user, product=product)
-        product.number_of_sold += 1
-        product.save()
-        queryset = CartProduct.objects.filter(buyer=request.user).select_related('product').prefetch_related(
-            'product__category', 'product__photos', 'product__discount')
-        return Response(CartProductSerializer(instance=queryset, many=True).data)
+        if product.available:
+            cart_product = CartProduct.objects.create(buyer=user, product=product)
+            product.number_of_sold += 1
+            product.save()
+            queryset = CartProduct.objects.filter(buyer=request.user).select_related('product').prefetch_related(
+                'product__category', 'product__photos', 'product__discount')
+            return Response(CartProductSerializer(instance=queryset, many=True).data)
+        return Response({'error': 'product is not available'})

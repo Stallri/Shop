@@ -7,13 +7,19 @@ from discounts.serializer import DiscountSerializer
 class ProductPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductPhoto
-        fields = ('photo', )
+        fields = ('photo',)
 
 
 class ProductSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.title')
     discount = DiscountSerializer()
     photos = ProductPhotoSerializer(many=True)
+    price = serializers.SerializerMethodField()
+
+    def get_price(self, instance):
+        if instance.discount:
+            return instance.price - instance.price * (instance.discount.percent / 100)
+        return instance.price
 
     class Meta:
         model = Product
